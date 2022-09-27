@@ -1,0 +1,31 @@
+[tool.poetry]
+name = "super-agent-tools"
+version = "0.0.1"
+description = "Golden's Super Agent tools for import data to our protocol"
+authors = ["aychang95"]
+
+[tool.poetry.dependencies]
+python = "^3.8, !=3.9.7, <3.11"
+wheel = "^0.36.2"
+tqdm = "^4.63.1"
+streamlit = "^1.12.2"
+streamlit-aggrid = "^0.3.3"
+streamlit-agraph = "^0.0.42"
+spacy-streamlit = "^1.0.4"
+godel = "^0.4.1"
+openpyxl = "^3.0.10"
+spacy = "^3.4.1"
+en-core-web-md = {url = "https://github.com/explosion/spacy-models/releases/download/en_core_web_md-3.4.0/en_core_web_md-3.4.0-py3-none-any.whl#egg=en_core_web_md"}
+extruct = "^0.13.0"
+boilerpy3 = "^1.0.6"
+w3lib = "^2.0.1"
+pytidylib = "^0.3.2"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+flake8 = "^3.8.4"
+black = "^22.6.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
