@@ -12,11 +12,7 @@ st.markdown(
 
         ### Want to learn more?
 
-        - Check out [streamlit.io](https://streamlit.io)
-        - Jump into our [documentation](https://docs.streamlit.io)
-        - Ask a question in our [community
-          forums](https://discuss.streamlit.io)
+        - Check out [Golden's Protocol](https://docs.golden.xyz)
 
-        ### See more complex demos
     """
     )
