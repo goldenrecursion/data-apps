@@ -6,7 +6,6 @@ authors = ["aychang95"]
 
 [tool.poetry.dependencies]
 python = "^3.8, !=3.9.7, <3.11"
-wheel = "^0.36.2"
 tqdm = "^4.63.1"
 streamlit = "^1.12.2"
 streamlit-aggrid = "^0.3.3"
