@@ -10,7 +10,5 @@ Try it out with docker:
 docker-compose build
 docker-compose up
 
-# Go to localhost:8501
+Go to localhost:8501
 ```
-
-Try it out at https://streamlit.golden.xyz! (Not Active)
