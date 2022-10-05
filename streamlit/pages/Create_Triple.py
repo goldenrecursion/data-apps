@@ -15,32 +15,54 @@ st.set_page_config(layout="wide")
 st.markdown("# Create Triple")
 st.sidebar.markdown("# Create Triple")
 
-"# 0. Add your API key"
-api_key = st.text_input("API Key", "")
+########################
+##### Introduction #####
+########################
 
-# API
-if api_key:
-    goldapi = GoldenAPI(jwt_token=api_key)
+st.write("## Introduction")
+st.markdown(
+    """
+In order to create a triple in Golden's protocol, you'll need to got through the following processes:
+
+1. Disambiguate Subject
+    - You'll want to retrieve the entity you want to add a triple to
+    - If you can't find an entity, you may want to create one in the "Create Entity" page
+
+2. Create Statements
+    - Create additional statements from predicates
+
+3. Confirm Triple Submission
+    - Confirm the statement is correct
+    - Submit with the GraphQL API
+"""
+)
+
+
+#########################
+##### API and Setup #####
+#########################
+st.write("### 0. Authenticate with JSON Web Token (JWT) ")
+
+st.write(
+    "You can retrieve this from your profile page here: https://dapp.golden.xyz/profile"
+)
+
+jwt_token = st.text_input("JWT:", "")
+
+st.write("## Get Started")
+
+if jwt_token:
+    goldapi = GoldenAPI(jwt_token=jwt_token)
 else:
     goldapi = GoldenAPI()
 
-citation_urls = set()
-try:
-    entity_edges = entity_data["data"]["entity"]["statementsBySubjectId"]["edges"]
-    for e in entity_edges:
-        if e["node"]["citationUrl"]:
-            citation_urls.add(e["node"]["citationUrl"])
-except:
-    "Seems like there are no citations"
-
-
-"# 1. Submit Triple"
-
-# Get predicates and templates
+# Retrieve predicate and template data
 predicates = {}
+predicates_inverse = {}
 for p in goldapi.predicates()["data"]["predicates"]["edges"]:
     p = p["node"]
     predicates[p["name"]] = {"id": p["id"], "objectType": p["objectType"]}
+    predicates_inverse[p["id"]] = {"name": p["name"], "objectType": p["objectType"]}
 predicates_df = pd.DataFrame(predicates).transpose()
 
 templates = {}
@@ -53,14 +75,20 @@ for t in goldapi.templates()["data"]["templates"]["edges"]:
     }
 templates_df = pd.DataFrame(templates).transpose()
 
-# Get potential entity subjects from text
 
+############################
+##### Create Statement #####
+############################
+st.write("### 1. Create Statement")
 
 with st.container():
 
-    st.write("Specify triples to submit for entities that already exist")
+    st.write(
+        "Specify name of entity you want to create and make sure that it doesn't already exist with initial searching."
+    )
 
-    st.write("### Subject")
+    st.write("#### Subject")
+    data = None
 
     # Get entity text options
     subject = st.text_input("Subject name")
@@ -77,7 +105,7 @@ with st.container():
     if subject_search_choices:
         subject_search_choices = [(s["name"], s["id"]) for s in subject_search_choices]
         subject_entity_disambiguation = st.selectbox(
-            "Subject Golden entity", options=subject_search_choices
+            "Potential pre-existing entities", options=subject_search_choices
         )
     else:
         subject_entity_disambiguation = st.selectbox(
@@ -86,11 +114,11 @@ with st.container():
         )
 
     # Select predicate
-    st.write("### Predicate")
-    predicate = st.selectbox("Predicate", options=predicates_df.index)
+    st.write("#### Predicate")
+    predicate = st.selectbox("Predicate", options=sorted(predicates_df.index))
 
     # Select object
-    st.write("### Object")
+    st.write("#### Object")
     # Depending on predicate, provide object options
     object_entity_disambiguation = []
     if predicates_df["objectType"][predicate] == "ENTITY":
@@ -126,11 +154,11 @@ with st.container():
         object = st.text_input("Enter")
 
     # Citation
-    st.write("### Citation")
+    st.write("#### Citation")
     citation = st.text_input("Citation")
 
-    "# 2. Triple Preview and Submission"
-    st.write("### Preview of Triple")
+    "### 2. Triple Preview and Submission"
+    st.write("#### Preview of Triple")
     col1, col2, col3 = st.columns(3)
     preview_subject = (
         subject_entity_disambiguation[0] if subject_entity_disambiguation else subject
