@@ -15,28 +15,51 @@ st.set_page_config(layout="wide")
 st.markdown("# Create Entity")
 st.sidebar.markdown("# Create Entity")
 
-"# 0. Add your API key"
-api_key = st.text_input("API Key", "")
+########################
+##### Introduction #####
+########################
 
-# API
-if api_key:
-    goldapi = GoldenAPI(jwt_token=api_key)
+st.write("## Introduction")
+st.markdown(
+    """
+In order to create an entity in Golden's protocol, you'll need to got through the following processes:
+
+1. Disambiguate Subject
+    - You'll need to confirm that the subject does not already exist
+    - This prevents and duplicates and potential penalities
+    - If unable to disambiguate, you can create your entity subject
+
+2. Select Template and Create Statements
+    - Minimum Disambiguation Triples (MDTs) are required
+    - MDTs includes templates via the "Is a" predicate
+    - Create additional MDT statements dependant on your template statement
+
+3. Confirm Entity Submission
+    - Confirm the entity statements are correct
+    - Submit by creating entity with the GraphQL API
+"""
+)
+
+
+#########################
+##### API and Setup #####
+#########################
+st.write("### 0. Authenticate with JSON Web Token (JWT) ")
+
+st.write(
+    "You can retrieve this from your profile page here: https://dapp.golden.xyz/profile"
+)
+
+jwt_token = st.text_input("JWT:", "")
+
+st.write("## Get Started")
+
+if jwt_token:
+    goldapi = GoldenAPI(jwt_token=jwt_token)
 else:
     goldapi = GoldenAPI()
 
-citation_urls = set()
-try:
-    entity_edges = entity_data["data"]["entity"]["statementsBySubjectId"]["edges"]
-    for e in entity_edges:
-        if e["node"]["citationUrl"]:
-            citation_urls.add(e["node"]["citationUrl"])
-except:
-    "Seems like there are no citations"
-
-
-"# 1. Attempt to Disambiguate Subject"
-
-# Get predicates and templates
+# Retrieve predicate and template data
 predicates = {}
 predicates_inverse = {}
 for p in goldapi.predicates()["data"]["predicates"]["edges"]:
@@ -55,7 +78,11 @@ for t in goldapi.templates()["data"]["templates"]["edges"]:
     }
 templates_df = pd.DataFrame(templates).transpose()
 
-# Get potential entity subjects from text
+
+################################
+##### Disambiguate Subject #####
+################################
+st.write("### 1. Disambiguate Subject")
 
 with st.container():
 
@@ -63,7 +90,7 @@ with st.container():
         "Specify name of entity you want to create and make sure that it doesn't already exist with initial searching."
     )
 
-    st.write("### Subject")
+    st.write("#### Subject")
     data = None
 
     # Get entity text options
@@ -89,31 +116,75 @@ with st.container():
             options=["No entity found. Continue to create entity."],
         )
 
-    st.write("### Statements")
+    ##############################
+    ##### Template Statement #####
+    ##############################
 
-    st.write(
-        "# 2. Create Statements and Minimum Disambiguation Triples(MDTs) for Entity"
+    # All statements to be added
+    statements = []
+
+    st.write("### 2. Select Template Subject")
+
+    template_entity = st.selectbox(
+        "'Is a' Templates",
+        sorted(templates_df.index),
+    )
+    template_entity_id = templates_df.entityId[template_entity]
+
+    # Add "Is a" template statement
+    statements.append(
+        StatementInputRecordInput(
+            predicate_id=predicates["Is a"]["id"],
+            object_entity_id=template_entity_id,
+            citation_urls=[],
+            qualifiers=[],
+        )
     )
 
+    # Add "Name predicate"
+    statements.append(
+        StatementInputRecordInput(
+            predicate_id=predicates["Name"]["id"],
+            object_value=subject,
+            citation_urls=[],
+            qualifiers=[],
+        )
+    )
+
+    ###############################
+    ##### MDTs and Statements #####
+    ###############################
+
+    st.write(
+        "### 3. Create Minimum Disambiguation Triples(MDTs) and Statements for Entity"
+    )
+
+    st.write(
+        "Please first refer to our Protocol Schema at https://dapp.golden.xyz/schema before selecting your statements."
+    )
+    st.write(
+        "Additional information on MDTs can be found here https://docs.golden.xyz/protocol/concepts/minimum-disambiguation-triple-requirements-mdt"
+    )
+
+    st.write("#### Statements")
     # Specifiy number of predicates and load
     num_predicates = st.number_input("Number of statements you'd like to add", 0, 10)
 
-    statements = []
     object_entity_disambiguation = []
     for npred in range(int(num_predicates)):
 
         st.write("___")
 
-        st.write(f"### Statement #{npred+1}")
+        st.write(f"#### Statement #{npred+1}")
 
         # Select predicate
-        st.write("#### Predicate")
+        st.write("##### Predicate")
         predicate = st.selectbox(
-            "Predicate", options=predicates_df.index, key=f"PREDICATE_{npred}"
+            "Predicate", options=sorted(predicates_df.index), key=f"PREDICATE_{npred}"
         )
 
         # Select object
-        st.write("#### Object")
+        st.write("##### Object")
         # Depending on predicate, provide object options
         object_entity_disambiguation = []
         if predicates_df["objectType"][predicate] == "ENTITY":
@@ -152,7 +223,7 @@ with st.container():
             object = st.text_input("Enter", key=f"ELSE_{npred}")
 
         # Citation
-        st.write("#### Citation")
+        st.write("##### Citation")
         citation = st.text_input("Citation", key=f"CITATION_{npred}")
 
         # Create statement record input
@@ -177,8 +248,12 @@ with st.container():
                 )
             )
 
-    "# 3. Entity Preview and Submission"
-    st.write("#### Preview of Entity")
+    #########################################
+    ##### Entity Preview and Submission #####
+    #########################################
+
+    st.write("### 4. Entity Preview and Submission")
+    st.write("##### Preview of Entity")
     st.write(f"**Subject**:  {subject}")
     col1, col2, col3 = st.columns(3)
     with col1:
@@ -199,7 +274,7 @@ with st.container():
 
     if st.button("Submit Entity"):
         if statements:
-            create_entity_input = CreateEntityInput(name=subject, statements=statements)
+            create_entity_input = CreateEntityInput(statements=statements)
             data = goldapi.create_entity(create_entity_input=create_entity_input)
         else:
             data = None
