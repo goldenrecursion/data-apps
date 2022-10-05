@@ -11,7 +11,7 @@ streamlit = "^1.12.2"
 streamlit-aggrid = "^0.3.3"
 streamlit-agraph = "^0.0.42"
 spacy-streamlit = "^1.0.4"
-godel = "^0.4.2"
+godel = "^0.4.3"
 openpyxl = "^3.0.10"
 spacy = "^3.4.1"
 en-core-web-md = {url = "https://github.com/explosion/spacy-models/releases/download/en_core_web_md-3.4.0/en_core_web_md-3.4.0-py3-none-any.whl#egg=en_core_web_md"}
