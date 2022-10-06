@@ -84,7 +84,7 @@ st.write("### 1. Create Statement")
 with st.container():
 
     st.write(
-        "Specify name of entity you want to create and make sure that it doesn't already exist with initial searching."
+        "Specify name of entity you want to create a statement for."
     )
 
     st.write("#### Subject")
@@ -157,6 +157,9 @@ with st.container():
     st.write("#### Citation")
     citation = st.text_input("Citation")
 
+################################
+##### Statement Submission #####
+################################
     "### 2. Triple Preview and Submission"
     st.write("#### Preview of Triple")
     col1, col2, col3 = st.columns(3)
