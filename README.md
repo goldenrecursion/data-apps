@@ -1,14 +1,43 @@
 # Super Agent Tools
 
-This repository hosts Golden's low-code applications and demonstrations for sumbmitting data to [Golden's Protocol](https://dapp.golden.xyz).
 
-These applications are built [Godel](https://github.com/goldenrecursion/godel) and [Spacy](https://github.com/explosion/spaCy).
+## Overview
+This repository hosts Golden's low-code applications and demonstrations for submitting data to [Golden's Protocol](https://dapp.golden.xyz).
 
-Try it out with docker:
+These demonstrations directly integrate with [Golden's GraphQL API](https://docs.golden.xyz/api/readme-1) and include ML/NLP applications that use named entity recognition models to help super agents extract entity/triple data.
+
+These applications are built with [Godel](https://github.com/goldenrecursion/godel) and [Spacy](https://github.com/explosion/spaCy).
+
+## Streamlit Demo
+
+We've hosted a demo on streamlit that you can checkout [here](https://goldenrecursion-super-agent-t-streamlitsuper-agent-tools-ap2wuh.streamlitapp.com/)!
+
+It includes pages on:
+  - Entity Creation
+  - Triple Creation
+  - Text to Triples
+
+## Development
+
+### Docker
+
+Build and deploy our demos with docker:
 
 ``` 
 docker-compose build
 docker-compose up
-
-Go to localhost:8501
 ```
+
+Check out the streamlit demo at `localhost:8501`
+
+## Contact
+
+For all things related to `super-agent-tools` and development, please contact the maintainer Andrew Chang at andrew@golden.co or [@achang1618](https://twitter.com/achang1618) for any quesions or comments.
+
+For all other support, please reach out to support@golden.co.
+
+Follow [@golden](https://twitter.com/Golden) to keep up with additional news!
+
+## License
+
+This project is licensed under the terms of the Apache 2.0 license
