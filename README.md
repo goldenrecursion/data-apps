@@ -10,7 +10,7 @@ These applications are built with [Godel](https://github.com/goldenrecursion/god
 
 ## Streamlit Demo
 
-We've hosted a demo on streamlit that you can checkout [here](https://goldenrecursion-super-agent-t-streamlitsuper-agent-tools-ap2wuh.streamlitapp.com/)!
+We've hosted a demo on streamlit that you can checkout  at https://super-agent-tools.streamlitapp.com!
 
 It includes pages on:
   - Entity Creation
