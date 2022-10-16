@@ -150,6 +150,8 @@ with st.container():
         object = st.text_input("Enter URI")
     elif predicates_df["objectType"][predicate] == "STRING":
         object = st.text_input("Enter string")
+    elif predicates_df["objectType"][predicate] == "DATE":
+        object = st.text_input("Enter date DD-MM-YYYY", key=f"DATE_{npred}")
     else:
         object = st.text_input("Enter")
 
