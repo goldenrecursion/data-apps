@@ -219,6 +219,8 @@ with st.container():
             object = st.text_input("Enter URI", key=f"ANY_URI_{npred}")
         elif predicates_df["objectType"][predicate] == "STRING":
             object = st.text_input("Enter string", key=f"STRING_{npred}")
+        elif predicates_df["objectType"][predicate] == "DATE":
+            object = st.text_input("Enter date DD-MM-YYYY", key=f"DATE_{npred}")    
         else:
             object = st.text_input("Enter", key=f"ELSE_{npred}")
 
