@@ -1,7 +1,7 @@
 import streamlit as st
 
-st.markdown("# Welcome to Super Agent Tools")
-st.sidebar.markdown("# Welcome to Super Agent Tools")
+st.markdown("# Welcome to Data Apps")
+st.sidebar.markdown("# Welcome to Data Apps")
 
 
 "Some fun interfaces for playing with the protocol API with Golden's AI services and capabilities!"

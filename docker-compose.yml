@@ -1,11 +1,11 @@
 services:
   streamlit:
     build: .
-    working_dir: /opt/super-agent-tools
+    working_dir: /opt/data-apps
     command: >
-      bash -c "python3 -m streamlit run /opt/super-agent-tools/streamlit/Super_Agent_Tools.py"
+      bash -c "python3 -m streamlit run /opt/data-apps/streamlit/Data_Apps.py"
     ports:
       - "8501:8501"
     volumes:
-      - ./:/opt/super-agent-tools/
-      - ./super-agent-tools-logs:/var/log
+      - ./:/opt/data-apps/
+      - ./data-apps-logs:/var/log

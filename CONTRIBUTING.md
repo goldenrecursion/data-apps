@@ -1,4 +1,4 @@
-# Contributing to Super-Agent-Tools
+# Contributing to data-apps
 
 Contributions are welcome through Pull Requests
 

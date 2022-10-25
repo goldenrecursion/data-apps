@@ -53,5 +53,5 @@ COPY pyproject.toml poetry.lock ./
 RUN poetry install
 
 # Copy source code to the image
-COPY . ./super-agents-tools
-ENV PYTHONPATH=/opt/super-agent-tools/src:$PYTHONPATH
+COPY . ./data-apps
+ENV PYTHONPATH=/opt/data-apps/src:$PYTHONPATH
