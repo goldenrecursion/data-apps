@@ -9,7 +9,7 @@ They are also built with [Godel](https://github.com/goldenrecursion/godel) and [
 
 ## Streamlit Demo
 
-We've hosted a demo on streamlit that you can checkout at https://data-apps.streamlitapp.com!
+We've hosted a demo on streamlit that you can checkout at https://golden-data.streamlitapp.com!
 
 It includes pages on:
   - Entity Creation
